@@ -66,45 +66,46 @@ Note that map(), skip() and other methods should detect from which method it is 
 On top of that an API and/or a DSL would be provided for the developer to specify the whole assembling behavior, including loading from a repo, creating from a factory and so on... **This part would completely replace the current Assemblers facade, which should be deprecated and reimplemented with this DSL**.
 
 ```java
+import static org.seedstack.business.api.interfaces.assembler.dsl.Interfaces.assemble;
+
 OrderDto orderDto = new OrderDto();
 Order myOrder = new Order();
 Customer customer = new Customer();
 
 // dto to aggregate
 
-Order order = assemble.dto(orderDto).to(myOrder);
+Order order = assemble().dto(orderDto).to(myOrder);
 
-order = assemble.dto(orderDto).to(Order.class).fromFactory(); // from factory
+order = Interfaces.assemble().dto(orderDto).to(Order.class).fromFactory(); // from factory
 
 List<Object> dtos = Lists.newArrayList(orderDto, myOrder);
 List<Order> orders = Lists.newArrayList(myOrder, myOrder);
 
-order = assemble.dtos(dtos).to(Tuple.tuple(Order.class, Customer.class)).fromFactory(); // list of dto to tuple of aggregates
+order = assemble().dtos(dtos).to(Tuple.tuple(Order.class, Customer.class)).fromFactory(); // list of dto to tuple of aggregates
 
-order = assemble.dtos(dtos).to(orders); // list of dtos to list of aggregates
+order = assemble().dtos(dtos).to(orders); // list of dtos to list of aggregates
 
-order = assemble.dto(orderDto).to(Order.class).fromRepository().orFail(); // from repo or fail
+order = assemble().dto(orderDto).to(Order.class).fromRepository().orFail(); // from repo or fail
 
-order = assemble.dto(orderDto).to(Order.class).fromRepository().thenFromFactory(); // from repo or fact
+order = assemble().dto(orderDto).to(Order.class).fromRepository().thenFromFactory(); // from repo or fact
 
-order = assemble.dto(orderDto).to(Order.class).fromRepositories("jpa", "jdbc").thenFromFactories("fact1", "fact2"); // with qualifiers
+order = assemble().dto(orderDto).to(Order.class).fromRepositories("jpa", "jdbc").thenFromFactories("fact1", "fact2"); // with qualifiers
 
 // aggregate to dto
 
-OrderDto orderDto1 = assemble.aggregate(myOrder).to(OrderDto.class);
+OrderDto orderDto1 = assemble().aggregate(myOrder).to(OrderDto.class);
 
-orderDto1 = assemble.aggregate(myOrder).toDynamicDto();
+orderDto1 = assemble().aggregate(myOrder).toDynamicDto();
 
-orderDto1 = assemble.aggregates(Lists.newArrayList(myOrder, myOrder)).toDynamicDto();
+orderDto1 = assemble().aggregates(Lists.newArrayList(myOrder1, myOrder2)).toDynamicDto();
 
 // tuple of aggregate to dto
 
-orderDto1 = assemble.tuple(Tuple.tuple(Order.class, Customer.class)).to(OrderDto.class);
+orderDto1 = assemble().tuple(Tuple.tuple(Order.class, Customer.class)).to(OrderDto.class);
 
-orderDto1 = assemble.tuples(
+orderDto1 = assemble().tuples(
         Lists.newArrayList(Tuple.tuple(order, customer), Tuple.tuple(order, customer))
 ).to(OrderDto.class);
-
 ```    
 
 ## Finder improvements
