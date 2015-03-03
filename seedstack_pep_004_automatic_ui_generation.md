@@ -66,7 +66,7 @@ Note that map(), skip() and other methods should detect from which method it is 
 On top of that an API and/or a DSL would be provided for the developer to specify the whole assembling behavior, including loading from a repo, creating from a factory and so on... **This part would completely replace the current Assemblers facade, which should be deprecated and reimplemented with this DSL**.
 
 ```java
-import static org.seedstack.business.api.interfaces.assembler.dsl.Interfaces.assemble;
+import static org.seedstack.business.api.interfaces.Interfaces.assemble;
 
 OrderDto orderDto = new OrderDto();
 Order myOrder = new Order();
